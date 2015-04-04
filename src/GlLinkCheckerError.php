@@ -3,7 +3,7 @@
  * PHP version 5.4
  *
  * @category  GLICER
- * @package   GlHtml
+ * @package   GlLinkChecker
  * @author    Emmanuel ROECKER
  * @author    Rym BOUCHAGOUR
  * @copyright 2015 GLICER
@@ -20,7 +20,6 @@ namespace GlLinkChecker;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Ring\Exception\RingException;
 
 /**
@@ -277,7 +276,7 @@ class GlLinkCheckerError
     /**
      * @return array
      */
-    public function getErrors()
+    public function getErrorMessages()
     {
         $message = [];
 
@@ -298,5 +297,19 @@ class GlLinkCheckerError
         }
 
         return $message;
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrorArray() {
+        $error = [];
+
+        $error['absolute'] = $this->isAbsolute;
+        $error['lowercase'] = $this->isLowerCase;
+        $error['exist'] = $this->isExist;
+        $error['notendslash'] = $this->isNotEndSlash;
+
+        return $error;
     }
 }

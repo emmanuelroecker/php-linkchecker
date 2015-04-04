@@ -1,12 +1,11 @@
 # php-linkchecker 
 
-Check broken links in html files, sitemap.xml and robots.txt.
+Check broken links in html/json files, sitemap.xml and robots.txt.
 
 It's working with :
 
 *   [Guzzle](http://docs.guzzlephp.org)
 *   [Symfony Finder Component](http://symfony.com/doc/2.3/components/finder.html)
-*   [Symfony Console Component](http://symfony.com/doc/2.3/components/console/index.html)
 *   [Glicer Simply-html Component](https://github.com/emmanuelroecker/php-simply-html)
 
 ## Installation

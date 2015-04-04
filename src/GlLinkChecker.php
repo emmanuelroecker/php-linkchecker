@@ -5,7 +5,7 @@
  * PHP version 5.4
  *
  * @category  GLICER
- * @package   GlHtml
+ * @package   GlLinkChecker
  * @author    Emmanuel ROECKER
  * @author    Rym BOUCHAGOUR
  * @copyright 2015 GLICER
@@ -22,7 +22,6 @@ use GlHtml\GlHtml;
 use GuzzleHttp\Client;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\Console\Output\StreamOutput;
 
 /**
  * Class GlLinkChecker
@@ -83,6 +82,8 @@ class GlLinkChecker
 
 
     /**
+     * get all links in an object
+     *
      * @param       $obj
      * @param array $links
      */
@@ -104,6 +105,8 @@ class GlLinkChecker
     }
 
     /**
+     * get all links in a json
+     *
      * @param string $json
      *
      * @return array
@@ -119,6 +122,8 @@ class GlLinkChecker
 
 
     /**
+     * check links in a sitemap
+     *
      * @param string $sitemap
      *
      * @return array
@@ -142,19 +147,24 @@ class GlLinkChecker
     }
 
     /**
+     * check 403 and 404 errors
+     *
+     * @param array $urlerrors
      * @param array $urlforbiddens
      *
      * @return string
      */
-    public function checkErrors(array $urlforbiddens)
+    public function checkErrors(array $urlerrors, array $urlforbiddens)
     {
-        $result   = [];
-        $test404  = "/" . uniqid() . ".html";
-        $response = $this->client->get($test404, ['exceptions' => false]);
-        if ($response->getStatusCode() != 404) {
-            $result["404"]["error"][] = $test404;
-        } else {
-            $result["404"]["ok"][] = $test404;
+        $result = [];
+
+        foreach ($urlerrors as $urlerror) {
+            $response = $this->client->get($urlerror, ['exceptions' => false]);
+            if ($response->getStatusCode() != 404) {
+                $result["404"]["error"][] = $urlerror;
+            } else {
+                $result["404"]["ok"][] = $urlerror;
+            }
         }
 
         foreach ($urlforbiddens as $urlforbidden) {
@@ -166,15 +176,12 @@ class GlLinkChecker
             }
         }
 
-        $resultfile   = sys_get_temp_dir() . "/" . uniqid("errorcheck") . ".txt";
-        $resultoutput = new StreamOutput(fopen($resultfile, 'a', false));
-        $resultoutput->write("\xEF\xBB\xBF"); //add ut8 bom to txt file
-        $resultoutput->write(print_r($result, true));
-
-        return $resultfile;
+        return $result;
     }
 
     /**
+     * check links in robots.txt and sitemap
+     *
      * @return array
      * @throws \Exception
      */
@@ -211,17 +218,13 @@ class GlLinkChecker
             }
         }
 
-        $resultfile   = sys_get_temp_dir() . "/" . uniqid("robotcheck") . ".txt";
-        $resultoutput = new StreamOutput(fopen($resultfile, 'a', false));
-        $resultoutput->write("\xEF\xBB\xBF"); //add ut8 bom to txt file
-        $resultoutput->write(print_r($result, true));
-
-        return $resultfile;
+        return $result;
     }
 
 
     /**
-     * @param string   $title
+     * check links in html and json files
+     *
      * @param Finder   $files
      * @param callable $checkstart
      * @param callable $checking
@@ -230,7 +233,7 @@ class GlLinkChecker
      * @throws \Exception
      * @return GlLinkCheckerError[]
      */
-    public function checkFiles($title, Finder $files, callable $checkstart, callable $checking, callable $checkend)
+    public function checkFiles(Finder $files, callable $checkstart, callable $checking, callable $checkend)
     {
         $linksByFile = [];
         /**
@@ -273,77 +276,8 @@ class GlLinkChecker
             $gllink->check(['exist']);
             $result[] = $gllink;
         }
-
-        $resultfile = sys_get_temp_dir() . "/" . uniqid("linkcheck") . ".html";
-        $html       = $this->exportToHtml($title, $result);
-        file_put_contents($resultfile, $html);
         $checkend();
 
-        return $resultfile;
-    }
-
-    /**
-     * @param string               $title
-     * @param GlLinkCheckerError[] $links
-     *
-     * @return string
-     */
-    private function exportToHtml($title, $links)
-    {
-        $html = '<!DOCTYPE HTML>';
-        $html .= '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">';
-        $html .= '<title>' . $title . '</title>';
-        $html .= '<style>';
-        $html .= '.error {  color: red  }';
-
-        $html .= '.tooltip
-                    {
-                        display: inline;
-                        position: relative;
-                        text-decoration: none;
-                        top: 0px;
-                        left: 0px;
-                    }';
-
-        $html .= '.tooltip:hover:after
-                    {
-                        background: #333;
-                        background: rgba(0,0,0,.8);
-                        border-radius: 5px;
-                        top: -5px;
-                        color: #fff;
-                        content: attr(data-tooltip);
-                        left: 160px;
-                        padding: 5px 15px;
-                        position: absolute;
-                        z-index: 98;
-                        width: 150px;
-                    }';
-        $html .= '</style>';
-        $html .= '</head><body>';
-
-        /**
-         * @var GlLinkCheckerError $link
-         */
-        foreach ($links as $link) {
-            $html .= '<div class="link">';
-            $url    = $link->getLink();
-            $files  = " -> " . implode(" ", $link->getFiles());
-            $errors = $link->getErrors();
-
-            if (count($errors) <= 0) {
-                $html .= '<a href="' . $url . '">' . $url . '</a>' . $files;
-                $html .= '</div>';
-                continue;
-            }
-
-            $tooltip = implode(' ', $errors);
-            $html .= '<a href="' . $url . '" class="error tooltip" data-tooltip="' . $tooltip . '">' . $url . '</a>' . $link->getStatusCode(
-                ) . $files;
-            $html .= '</div>';
-        }
-        $html .= '<br><br><br></body></html>';
-
-        return $html;
+        return $result;
     }
 } 
