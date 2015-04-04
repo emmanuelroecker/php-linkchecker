@@ -1,6 +1,6 @@
 # php-linkchecker 
 
-Check broken links in html/json files, sitemap.xml and robots.txt.
+Check broken links in html / json files, sitemap.xml and robots.txt.
 
 It's working with :
 
@@ -30,14 +30,78 @@ And install dependencies:
 php composer.phar install
 ```
 
-## How to check links in html files ?
+## How to check links in html / json files ?
 
+```php
+<?php
+    require 'vendor/autoload.php';
 
-## How to check links in sitemap.xml file ?
+    use GlLinkChecker\GlLinkChecker;
+    use Symfony\Component\Finder\Finder;
 
+    //relative url use host http://lyon.glicer.com to check link
+    $linkChecker  = new GlLinkChecker('http://lyon.glicer.com');
 
-## How to check links in robots.txt file ?
+    //construct list of local html and json files to check
+    $finder = new Finder();
+    $files  = $finder->files()->in('./public')->name("*.html")->name("*.json");
 
+    //launch links checking
+    $result  = $linkChecker->checkFiles(
+        $files,
+        function ($nbr) {
+            // called at beginning - $nbr urls to check
+        },
+        function ($url, $files) {
+            // called each $url - $files : list of filename containing $url link
+        },
+        function () {
+            // called at the end
+        }
+    );
+
+    //convert $result array in a temp html file
+    $filereport = GlLinkCheckerReport::toTmpHtml('lyonCheck',$result);
+
+    //$filereport contain fullpath to html file
+    print_r($filereport);
+```
+
+you can view $filereport with your browser
+
+## How to check links in robots.txt and sitemap files ?
+
+```php
+<?php
+     require 'vendor/autoload.php';
+
+     $linkChecker = new GlLinkChecker('http://lyon.glicer.com');
+     $result      = $linkChecker->checkRobotsSitemap();
+
+     print_r($result);
+```
+
+GlLinkChecker::checkRobotsSitemap() return an array like :
+
+```php
+    $result = [
+        'disallow' =>
+            ['error' => ['/img/', '/download/']],
+        'sitemap'  =>
+            [
+                'ok' => [
+                    '/sitemap.xml' =>
+                        [
+                            'ok' =>
+                                [
+                                    '/index.html',
+                                    '/section/probleme-solution/compresser-css-html-js.html'
+                                ]
+                        ]
+                ]
+            ]
+    ];
+```
 
 ## Contact
 
