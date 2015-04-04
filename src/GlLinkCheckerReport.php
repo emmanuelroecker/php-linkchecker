@@ -29,6 +29,8 @@ class GlLinkCheckerReport
      *
      * @param string $name
      * @param array  $result
+     *
+     * @return string
      */
     public static function toTmpTxt($name, $result)
     {
@@ -36,6 +38,8 @@ class GlLinkCheckerReport
         $resultoutput = new StreamOutput(fopen($resultfile, 'a', false));
         $resultoutput->write("\xEF\xBB\xBF"); //add ut8 bom to txt file
         $resultoutput->write(print_r($result, true));
+
+        return $resultfile;
     }
 
     /**
@@ -43,12 +47,16 @@ class GlLinkCheckerReport
      *
      * @param string               $name
      * @param GlLinkCheckerError[] $result
+     *
+     * @return string
      */
     public static function toTmpHtml($name, $result)
     {
         $resultfile = sys_get_temp_dir() . "/" . uniqid($name) . ".html";
         $html       = self::toHtml($name, $result);
         file_put_contents($resultfile, $html);
+
+        return $resultfile;
     }
 
     /**
