@@ -108,7 +108,7 @@ class GlLinkCheckerReport
             $html .= '<div class="link">';
             $url    = $link->getLink();
             $files  = " -> " . implode(" ", $link->getFiles());
-            $errors = $link->getErrors();
+            $errors = $link->getErrorMessages();
 
             if (count($errors) <= 0) {
                 $html .= '<a href="' . $url . '">' . $url . '</a>' . $files;
