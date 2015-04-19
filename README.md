@@ -103,6 +103,14 @@ GlLinkChecker::checkRobotsSitemap() return an array like :
     ];
 ```
 
+## Running Tests
+
+Launch from command line :
+
+```console
+vendor\bin\phpunit
+```
+
 ## Contact
 
 Authors : Emmanuel ROECKER & Rym BOUCHAGOUR
