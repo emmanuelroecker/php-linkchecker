@@ -60,27 +60,6 @@ class GlLinkChecker
     }
 
     /**
-     * @param string $text
-     * @param array  $links
-     *
-     * @return array
-     */
-    private function getLinks($text, &$links)
-    {
-        $regexUrl = '/[">\s]+((http|https|ftp|ftps)\:\/\/(.*?))["<\s]+/';
-        $urls     = null;
-        if (preg_match_all($regexUrl, $text, $urls) > 0) {
-            $matches = $urls[1];
-            foreach ($matches as $url) {
-                if (filter_var($url, FILTER_VALIDATE_URL)) {
-                    $links[$url] = $url;
-                }
-            }
-        }
-    }
-
-
-    /**
      * get all links in an object
      *
      * @param       $obj
@@ -278,4 +257,4 @@ class GlLinkChecker
 
         return $result;
     }
-} 
+}

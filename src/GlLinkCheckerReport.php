@@ -125,4 +125,4 @@ class GlLinkCheckerReport
 
         return $html;
     }
-} 
+}
