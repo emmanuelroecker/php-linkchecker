@@ -33,7 +33,7 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
         $result      = $linkChecker->checkRobotsSitemap();
         $expected    = [
             'disallow' =>
-                ['error' => ['/img/', '/download/']],
+                ['ok' => ['/img/', '/download/']],
             'sitemap'  =>
                 [
                     'ok' => [

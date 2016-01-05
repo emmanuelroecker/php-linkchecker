@@ -201,7 +201,6 @@ class GlLinkChecker
                 if ($response->getStatusCode() != 200) {
                     $result['sitemap']['error'][] = $urlsitemap;
                 } else {
-
                     $result['sitemap']['ok'][$urlsitemap] = $this->checkSitemap($response->getBody()->getContents());
                 }
             }
