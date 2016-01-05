@@ -16,15 +16,16 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.4",
         "guzzlehttp/guzzle": "~5.2",
-        "glicer/simply-html": "1.0.*",
-        "symfony/finder": "2.3.*",
-        "symfony/console": "2.3.*"
+        "glicer/simply-html": "~1.0",
+        "symfony/finder": "~2.3",
+        "symfony/console": "~2.3"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0",
-        "symfony/process": "2.3.*"
+        "symfony/process": "~2.3",
+        "satooshi/php-coveralls": "~0.7"
     },
     "autoload": {
         "psr-4": {

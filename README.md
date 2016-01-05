@@ -111,6 +111,8 @@ Launch from command line :
 vendor\bin\phpunit
 ```
 
+## License MIT
+
 ## Contact
 
 Authors : Emmanuel ROECKER & Rym BOUCHAGOUR
