@@ -19,7 +19,7 @@ This library can be found on [Packagist](https://packagist.org/packages/glicer/l
 
 The recommended way to install is through [composer](http://getcomposer.org).
 
-Edit your `composer.json` and add:
+Edit your `composer.json` and add :
 
 ```json
 {
@@ -29,7 +29,7 @@ Edit your `composer.json` and add:
 }
 ```
 
-And install dependencies:
+Install dependencies :
 
 ```bash
 php composer.phar install
@@ -38,38 +38,37 @@ php composer.phar install
 ## How to check links in html / json files ?
 
 ```php
-<?php
-    require 'vendor/autoload.php';
+require 'vendor/autoload.php';
 
-    use GlLinkChecker\GlLinkChecker;
-    use Symfony\Component\Finder\Finder;
+use GlLinkChecker\GlLinkChecker;
+use Symfony\Component\Finder\Finder;
 
-    //relative url use host http://lyon.glicer.com to check link
-    $linkChecker  = new GlLinkChecker('http://lyon.glicer.com');
+//relative url use host http://lyon.glicer.com to check link
+$linkChecker  = new GlLinkChecker('http://lyon.glicer.com');
 
-    //construct list of local html and json files to check
-    $finder = new Finder();
-    $files  = $finder->files()->in('./public')->name("*.html")->name("*.json");
+//construct list of local html and json files to check
+$finder = new Finder();
+$files  = $finder->files()->in('./public')->name("*.html")->name("*.json");
 
-    //launch links checking
-    $result  = $linkChecker->checkFiles(
-        $files,
-        function ($nbr) {
-            // called at beginning - $nbr urls to check
-        },
-        function ($url, $files) {
-            // called each $url - $files : list of filename containing $url link
-        },
-        function () {
-            // called at the end
-        }
-    );
+//launch links checking
+$result  = $linkChecker->checkFiles(
+    $files,
+    function ($nbr) {
+        // called at beginning - $nbr urls to check
+    },
+    function ($url, $files) {
+        // called each $url - $files : list of filename containing $url link
+    },
+    function () {
+        // called at the end
+    }
+);
 
-    //convert $result array in a temp html file
-    $filereport = GlLinkCheckerReport::toTmpHtml('lyonCheck',$result);
+//convert $result array in a temp html file
+$filereport = GlLinkCheckerReport::toTmpHtml('lyonCheck',$result);
 
-    //$filereport contain fullpath to html file
-    print_r($filereport);
+//$filereport contain fullpath to html file
+print_r($filereport);
 ```
 
 you can view $filereport with your browser
@@ -77,35 +76,34 @@ you can view $filereport with your browser
 ## How to check links in robots.txt and sitemap files ?
 
 ```php
-<?php
-     require 'vendor/autoload.php';
+require 'vendor/autoload.php';
 
-     $linkChecker = new GlLinkChecker('http://lyon.glicer.com');
-     $result      = $linkChecker->checkRobotsSitemap();
+$linkChecker = new GlLinkChecker('http://lyon.glicer.com');
+$result      = $linkChecker->checkRobotsSitemap();
 
-     print_r($result);
+print_r($result);
 ```
 
 GlLinkChecker::checkRobotsSitemap() return an array like :
 
 ```php
-    $result = [
-        'disallow' =>
-            ['error' => ['/img/', '/download/']],
-        'sitemap'  =>
-            [
-                'ok' => [
-                    '/sitemap.xml' =>
-                        [
-                            'ok' =>
-                                [
-                                    '/index.html',
-                                    '/section/probleme-solution/compresser-css-html-js.html'
-                                ]
-                        ]
-                ]
+$result = [
+    'disallow' =>
+        ['error' => ['/img/', '/download/']],
+    'sitemap'  =>
+        [
+            'ok' => [
+                '/sitemap.xml' =>
+                    [
+                        'ok' =>
+                            [
+                                '/index.html',
+                                '/section/probleme-solution/compresser-css-html-js.html'
+                            ]
+                    ]
             ]
-    ];
+        ]
+];
 ```
 
 ## Running Tests
