@@ -59,7 +59,6 @@ class GlLinkChecker
         $this->internalurls = $internalurls;
     }
 
-
     /**
      * @param string $text
      * @param array  $links

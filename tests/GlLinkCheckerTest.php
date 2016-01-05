@@ -82,7 +82,6 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(6, count($result));
-
         $this->assertEquals($result[0]->getLink(), "/section/probleme-solution/compresser-css-html-js.html");
         $this->assertEquals(
              $result[0]->getErrorArray(),
