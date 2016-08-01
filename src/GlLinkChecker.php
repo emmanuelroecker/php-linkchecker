@@ -45,7 +45,8 @@ class GlLinkChecker
     public function __construct($rooturl = null, array $internalurls = null)
     {
         $this->client = new Client([
-            'base_url' => $rooturl,
+            'base_uri' => $rooturl,
+            'verify'   => false,
             'defaults' => [
                 'headers' => [
                     'User-Agent'      => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:36.0) Gecko/20100101 Firefox/36.0',
@@ -55,7 +56,6 @@ class GlLinkChecker
                 ]
             ]
         ]);
-        $this->client->setDefaultOption('verify', false);
         $this->internalurls = $internalurls;
     }
 

@@ -65,6 +65,18 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result);
     }
 
+    private function validatelink($link, $links, $result, array $errorarray)
+    {
+        $key = array_search($link, $links);
+        if ($key === false) {
+            $this->fail($link . " - " . var_export($links, TRUE));
+        }
+        $this->assertEquals(
+             $result[$key]->getErrorArray(),
+                 $errorarray
+        );
+    }
+
     public function testLinks()
     {
         $finder = new Finder();
@@ -82,40 +94,17 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(6, count($result));
-        $this->assertEquals($result[0]->getLink(), "/section/probleme-solution/compresser-css-html-js.html");
-        $this->assertEquals(
-             $result[0]->getErrorArray(),
-                 ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]
-        );
 
-        $this->assertEquals($result[1]->getLink(), "http://dev.glicer.com/");
-        $this->assertEquals(
-             $result[1]->getErrorArray(),
-                 ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]
-        );
+        $links = [];
+        foreach ($result as $link) {
+            $links[] = $link->getLink();
+        }
 
-        $this->assertEquals($result[2]->getLink(), "http://stop.glicer.com/no-exist.html");
-        $this->assertEquals(
-             $result[2]->getErrorArray(),
-                 ['absolute' => true, 'lowercase' => true, 'exist' => false, 'notendslash' => true]
-        );
-
-        $this->assertEquals($result[3]->getLink(), "/index.html");
-        $this->assertEquals(
-             $result[3]->getErrorArray(),
-                 ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]
-        );
-
-        $this->assertEquals($result[4]->getLink(), "http://lyon.glicer.com/");
-        $this->assertEquals(
-             $result[4]->getErrorArray(),
-                 ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]
-        );
-
-        $this->assertEquals($result[5]->getLink(), "http://dev.glicer.com/section/probleme-solution/prefixer-automatiquement-css.html");
-        $this->assertEquals(
-             $result[5]->getErrorArray(),
-                 ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]
-        );
+        $this->validatelink("/section/probleme-solution/compresser-css-html-js.html", $links, $result,['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
+        $this->validatelink("http://dev.glicer.com/", $links,$result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
+        $this->validatelink("http://stop.glicer.com/no-exist.html", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => false, 'notendslash' => true]);
+        $this->validatelink("/index.html", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
+        $this->validatelink("http://lyon.glicer.com/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
+        $this->validatelink("http://dev.glicer.com/section/probleme-solution/prefixer-automatiquement-css.html", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
     }
 }
