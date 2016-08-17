@@ -19,12 +19,12 @@
         "php": ">=5.5",
         "guzzlehttp/guzzle": "~6.2",
         "glicer/simply-html": "~1.0",
-        "symfony/finder": "~2.3",
-        "symfony/console": "~2.3"
+        "symfony/finder": "~2.3 || ~3.0",
+        "symfony/console": "~2.3 || ~3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.0",
-        "symfony/process": "~2.3",
+        "phpunit/phpunit": "~5.5",
+        "symfony/process": "~2.3 || ~3.0",
         "satooshi/php-coveralls": "~1.0"
     },
     "autoload": {
