@@ -77,6 +77,33 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testJson() 
+    {
+        $finder = new Finder();
+        $files = $finder->files()->in('./tests/json')->name("*.json");
+        
+        $linkChecker = new GlLinkChecker();
+        $result      = $linkChecker->checkFiles(
+                                   $files,
+                                       function () {
+                                       },
+                                       function () {
+                                       },
+                                       function () {
+                                       }
+        );
+        $this->assertEquals(3, count($result));
+
+        $links = [];
+        foreach ($result as $link) {
+            $links[] = $link->getLink();
+        }
+
+        $this->validatelink("http://dev.glicer.com/", $links,$result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
+        $this->validatelink("http://lyon.glicer.com/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
+        $this->validatelink("http://dev.glicer.com/section/probleme-solution/prefixer-automatiquement-css.html", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
+    }
+    
     public function testLinks()
     {
         $finder = new Finder();

@@ -35,7 +35,7 @@ class GlLinkChecker
     private $client;
 
     /**
-     * @var array $internalurls
+     * @var array|null $internalurls
      */
     private $internalurls;
 
@@ -125,6 +125,24 @@ class GlLinkChecker
     }
 
     /**
+     * check http error status code
+     *
+     * @param array $result
+     * @param array $urls
+     * @param int   $statuscode
+     */
+    private function checkStatus(array &$result, array $urls, $statuscode) {
+        foreach ($urls as $url) {
+            $response = $this->client->get($url, ['exceptions' => false]);
+            if ($response->getStatusCode() != $statuscode) {
+                $result[$statuscode]["error"][] = $url;
+            } else {
+                $result[$statuscode]["ok"][] = $url;
+            }
+        }
+    }
+    
+    /**
      * check 403 and 404 errors
      *
      * @param array $urlerrors
@@ -136,23 +154,8 @@ class GlLinkChecker
     {
         $result = [];
 
-        foreach ($urlerrors as $urlerror) {
-            $response = $this->client->get($urlerror, ['exceptions' => false]);
-            if ($response->getStatusCode() != 404) {
-                $result["404"]["error"][] = $urlerror;
-            } else {
-                $result["404"]["ok"][] = $urlerror;
-            }
-        }
-
-        foreach ($urlforbiddens as $urlforbidden) {
-            $response = $this->client->get($urlforbidden, ['exceptions' => false]);
-            if ($response->getStatusCode() != 403) {
-                $result["403"]["error"][] = $urlforbidden;
-            } else {
-                $result["403"]["ok"][] = $urlforbidden;
-            }
-        }
+        $this->checkStatus($result,$urlerrors,404);
+        $this->checkStatus($result,$urlforbiddens, 403);
 
         return $result;
     }
