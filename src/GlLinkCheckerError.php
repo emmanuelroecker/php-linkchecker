@@ -20,7 +20,7 @@ namespace GlLinkChecker;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Ring\Exception\RingException;
+
 
 /**
  * Class GlLinkCheckerUrl
@@ -107,9 +107,7 @@ class GlLinkCheckerError
             $this->statuscode = $e->getCode();
         } catch (RequestException $e) {
 
-        } catch (RingException $e) {
-
-        }
+        } 
 
         $this->isExist = false;
 
@@ -130,8 +128,7 @@ class GlLinkCheckerError
         } catch (ClientException $e) {
             $this->statuscode = $e->getCode();
         } catch (RequestException $e) {
-        } catch (RingException $e) {
-        }
+        } 
 
         $this->isExist = false;
 
