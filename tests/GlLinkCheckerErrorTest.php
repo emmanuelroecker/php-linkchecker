@@ -1,0 +1,40 @@
+<?php
+/**
+ * Test GlHtml
+ *
+ * PHP version 5.4
+ *
+ * @category  GLICER
+ * @package   GlLinkChecker\Tests
+ * @author    Emmanuel ROECKER
+ * @author    Rym BOUCHAGOUR
+ * @copyright 2015 GLICER
+ * @license   MIT
+ * @link      http://dev.glicer.com/
+ *
+ * Created : 04/04/15
+ * File : GlLinkChecker.php
+ *
+ */
+namespace GlLinkChecker\Tests;
+
+use GlLinkChecker\GlLinkCheckerError;
+use GuzzleHttp\Client;
+
+
+/**
+ * @covers        \GlLinkChecker\GlLinkCheckerError
+ * @backupGlobals disabled
+ */
+class GlLinkCheckerErrorTest extends \PHPUnit_Framework_TestCase
+{
+    public function testConstruct()
+    {
+        $client = new Client();
+        $linkerror = new GlLinkCheckerError($client,'http://dev.glicer.com',null);
+        
+        $this->assertEquals('http://dev.glicer.com', $linkerror->getLink());
+    }
+
+ 
+}

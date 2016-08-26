@@ -72,8 +72,7 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
             $this->fail($link . " - " . var_export($links, TRUE));
         }
         $this->assertEquals(
-             $result[$key]->getErrorArray(),
-                 $errorarray
+             $errorarray,$result[$key]->getErrorArray(),$link
         );
     }
 
