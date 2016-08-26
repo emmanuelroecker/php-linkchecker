@@ -23,6 +23,8 @@ use Symfony\Component\Finder\Finder;
 
 /**
  * @covers        \GlLinkChecker\GlLinkChecker
+ * @covers        \GlLinkChecker\GlLinkCheckerError
+ * @covers        \GlLinkChecker\GlLinkCheckerReport
  * @backupGlobals disabled
  */
 class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase

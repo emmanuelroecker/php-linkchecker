@@ -37,5 +37,13 @@ class GlLinkCheckerErrorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['file1','file2'], $linkerror->getFiles());
     }
 
- 
+    public function testCheck() 
+    {
+        $client = new Client();
+        $linkerror = new GlLinkCheckerError($client, 'http://dev.glicer.com',['index.html']);
+        
+        $linkerror->check(['exist','endslash','absolute','lowercase']);
+        
+        
+    }
 }

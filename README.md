@@ -2,7 +2,7 @@
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/emmanuelroecker/php-linkchecker/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/emmanuelroecker/php-linkchecker/?branch=master)
 [![Build Status](https://travis-ci.org/emmanuelroecker/php-linkchecker.svg?branch=master)](https://travis-ci.org/emmanuelroecker/php-linkchecker)
-[![Coverage Status](https://coveralls.io/repos/emmanuelroecker/php-linkchecker/badge.svg?branch=master&service=github)](https://coveralls.io/github/emmanuelroecker/php-linkchecker?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/emmanuelroecker/php-linkchecker/badge.svg?branch=master)](https://coveralls.io/github/emmanuelroecker/php-linkchecker?branch=master)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/4f63b147-1922-4527-9d0d-e369397a1c13/mini.png)](https://insight.sensiolabs.com/projects/4f63b147-1922-4527-9d0d-e369397a1c13)
 [![Dependency Status](https://www.versioneye.com/user/projects/57b447a53a9e2200484cee59/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57b447a53a9e2200484cee59)
 
