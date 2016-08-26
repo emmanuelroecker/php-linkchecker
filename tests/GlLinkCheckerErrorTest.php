@@ -43,7 +43,5 @@ class GlLinkCheckerErrorTest extends \PHPUnit_Framework_TestCase
         $linkerror = new GlLinkCheckerError($client, 'http://dev.glicer.com',['index.html']);
         
         $linkerror->check(['exist','endslash','absolute','lowercase']);
-        
-        
     }
 }

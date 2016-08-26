@@ -19,6 +19,7 @@
 namespace GlLinkChecker\Tests;
 
 use GlLinkChecker\GlLinkChecker;
+use GlLinkChecker\GlLinkCheckerReport;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -134,5 +135,28 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
         $this->validatelink("/index.html", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
         $this->validatelink("http://lyon.glicer.com/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
         $this->validatelink("http://dev.glicer.com/section/probleme-solution/prefixer-automatiquement-css.html", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
+    }
+    
+    public function testReport()
+    {
+        $finder = new Finder();
+        $files  = $finder->files()->in('./tests/site1')->name("*.html");
+        $linkChecker = new GlLinkChecker('http://' . WEB_SERVER_HOST . ':' . WEB_SERVER_PORT);
+        $result      = $linkChecker->checkFiles(
+                                   $files,
+                                       function () {
+                                       },
+                                       function () {
+                                       },
+                                       function () {
+                                       }
+        );
+
+        $filereport = GlLinkCheckerReport::toTmpHtml('testReport',$result);
+        
+        $report = file_get_contents($filereport);
+        $reportexpected = file_get_contents(__DIR__ . '/expectedReport.html');
+        
+        $this->assertEquals($reportexpected,$report);
     }
 }
