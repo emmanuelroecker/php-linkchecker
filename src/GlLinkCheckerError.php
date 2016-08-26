@@ -79,7 +79,7 @@ class GlLinkCheckerError
      * string $link
      * array $files
      */
-    public function __construct(Client $client, $link, $files)
+    public function __construct(Client $client, $link, array $files)
     {
         $url = parse_url($link);
         if ($url === false) {
