@@ -19,6 +19,7 @@
 namespace GlLinkChecker\Tests;
 
 use GlLinkChecker\GlLinkChecker;
+use GlLinkChecker\GlLinkCheckerError;
 use GlLinkChecker\GlLinkCheckerReport;
 use Symfony\Component\Finder\Finder;
 
@@ -152,6 +153,11 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
                                        }
         );
 
+        //sort link by name
+        usort($result,function(GlLinkCheckerError $linkA,GlLinkCheckerError $linkB) {
+                return strcmp($linkA->getLink(), $linkB->getlink());
+            });
+        
         $filereport = GlLinkCheckerReport::toTmpHtml('testReport',$result);
         
         $report = file_get_contents($filereport);
