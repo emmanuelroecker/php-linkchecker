@@ -6,7 +6,7 @@
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/4f63b147-1922-4527-9d0d-e369397a1c13/mini.png)](https://insight.sensiolabs.com/projects/4f63b147-1922-4527-9d0d-e369397a1c13)
 [![Dependency Status](https://www.versioneye.com/user/projects/57b447a53a9e2200484cee59/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57b447a53a9e2200484cee59)
 
-Check broken links in html / json files, sitemap.xml and robots.txt.
+Check broken links in html / json files, sitemap.xml, markdown and robots.txt.
 
 It's working with :
 
