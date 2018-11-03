@@ -75,6 +75,7 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
         if ($key === false) {
             $this->fail($link . " - " . var_export($links, TRUE));
         }
+
         $this->assertEquals(
              $errorarray,$result[$key]->getErrorArray(),$link
         );
@@ -103,8 +104,35 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->validatelink("http://dev.glicer.com/", $links,$result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
-        $this->validatelink("http://lyon.glicer.com/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
+        $this->validatelink("http://lyon.glicer.com/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => false, 'notendslash' => true]);
         $this->validatelink("http://dev.glicer.com/section/probleme-solution/prefixer-automatiquement-css.html", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
+    }
+    
+    public function testMarkdown() 
+    {
+        $finder = new Finder();
+        $files = $finder->files()->in('./tests/md')->name("*.md");
+        
+        $linkChecker = new GlLinkChecker();
+        $result      = $linkChecker->checkFiles(
+                                   $files,
+                                       function () {
+                                       },
+                                       function () {
+                                       },
+                                       function () {
+                                       }
+        );
+        $this->assertEquals(3, count($result));
+
+        $links = [];
+        foreach ($result as $link) {
+            $links[] = $link->getLink();
+        }
+
+        $this->validatelink("https://ucarecdn.com/b7b8d79f-537b-4c9b-b4c3-e055556c2676/", $links,$result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
+        $this->validatelink("https://breatheco.de/en/lesson-asset/html5-cheat-shet/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => false, 'notendslash' => true]);
+        $this->validatelink("https://ucarecdn.com/8729c2f0-e4a6-4721-9ee9-3f29e6e852b5/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
     }
     
     public function testLinks()
@@ -134,7 +162,7 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
         $this->validatelink("http://dev.glicer.com/", $links,$result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
         $this->validatelink("http://stop.glicer.com/no-exist.html", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => false, 'notendslash' => true]);
         $this->validatelink("/index.html", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
-        $this->validatelink("http://lyon.glicer.com/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
+        $this->validatelink("http://lyon.glicer.com/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => false, 'notendslash' => true]);
         $this->validatelink("http://dev.glicer.com/section/probleme-solution/prefixer-automatiquement-css.html", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
     }
     
