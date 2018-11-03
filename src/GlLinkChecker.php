@@ -200,6 +200,20 @@ class GlLinkChecker
 
         return $result;
     }
+    
+    /**
+     * check links in any text file
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function getLinksFromMarkdown($markdownContent)
+    {
+        $pattern = '/\[.+\]\((https?:\/\/\S+)\)/';
+        
+        if($num_found = preg_match_all($pattern, $markdownContent, $out)) return $out[1];
+        else return [];
+    }
 
 
     /**
@@ -222,15 +236,21 @@ class GlLinkChecker
         foreach ($files as $file) {
             $inner   = file_get_contents($file->getRealPath());
             $keyname = $file->getRelativePathname();
-            if ($file->getExtension() == 'html') {
-                $html                  = new GlHtml($inner);
-                $linksByFile[$keyname] = $html->getLinks();
-            } else {
-                if ($file->getExtension() == 'json') {
+            $extension = $file->getExtension();
+            switch($extension){
+                case "html":
+                    $html = new GlHtml($inner);
+                    $linksByFile[$keyname] = $html->getLinks();
+                break;
+                case "json":
                     $linksByFile[$keyname] = $this->getJsonLinks($inner);
-                } else {
+                break;
+                case "md":
+                    $linksByFile[$keyname] = $this->getLinksFromMarkdown($inner);
+                break;
+                default:
                     throw new \Exception("Extension unknown : " . $keyname);
-                }
+                break;
             }
         }
 
