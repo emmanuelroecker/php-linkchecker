@@ -212,7 +212,7 @@ class GlLinkChecker
         $pattern = '/\[.+\]\((https?:\/\/\S+)\)/';
         
         if($num_found = preg_match_all($pattern, $markdownContent, $out)) return $out[1];
-        else [];
+        else return [];
     }
 
 
