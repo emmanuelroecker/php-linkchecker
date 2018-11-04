@@ -22,6 +22,7 @@ use GlLinkChecker\GlLinkChecker;
 use GlLinkChecker\GlLinkCheckerError;
 use GlLinkChecker\GlLinkCheckerReport;
 use Symfony\Component\Finder\Finder;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers        \GlLinkChecker\GlLinkChecker
@@ -29,7 +30,7 @@ use Symfony\Component\Finder\Finder;
  * @covers        \GlLinkChecker\GlLinkCheckerReport
  * @backupGlobals disabled
  */
-class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
+class GlLinkCheckerTest extends TestCase
 {
     public function testRobotsSitemap()
     {
@@ -81,11 +82,11 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testJson() 
+    public function testJson()
     {
         $finder = new Finder();
         $files = $finder->files()->in('./tests/json')->name("*.json");
-        
+
         $linkChecker = new GlLinkChecker();
         $result      = $linkChecker->checkFiles(
                                    $files,
@@ -107,12 +108,12 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
         $this->validatelink("http://lyon.glicer.com/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => false, 'notendslash' => true]);
         $this->validatelink("http://dev.glicer.com/section/probleme-solution/prefixer-automatiquement-css.html", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
     }
-    
-    public function testMarkdown() 
+
+    public function testMarkdown()
     {
         $finder = new Finder();
         $files = $finder->files()->in('./tests/md')->name("*.md");
-        
+
         $linkChecker = new GlLinkChecker();
         $result      = $linkChecker->checkFiles(
                                    $files,
@@ -134,7 +135,7 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
         $this->validatelink("https://breatheco.de/en/lesson-asset/html5-cheat-shet/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => false, 'notendslash' => true]);
         $this->validatelink("https://ucarecdn.com/8729c2f0-e4a6-4721-9ee9-3f29e6e852b5/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
     }
-    
+
     public function testLinks()
     {
         $finder = new Finder();
@@ -165,7 +166,7 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
         $this->validatelink("http://lyon.glicer.com/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => false, 'notendslash' => true]);
         $this->validatelink("http://dev.glicer.com/section/probleme-solution/prefixer-automatiquement-css.html", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
     }
-    
+
     public function testReport()
     {
         $finder = new Finder();
@@ -185,12 +186,50 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
         usort($result,function(GlLinkCheckerError $linkA,GlLinkCheckerError $linkB) {
                 return strcmp($linkA->getLink(), $linkB->getlink());
             });
-        
+
         $filereport = GlLinkCheckerReport::toTmpHtml('testReport',$result);
-        
+
         $report = file_get_contents($filereport);
         $reportexpected = file_get_contents(__DIR__ . '/expectedReport.html');
-        
+
         $this->assertEquals($reportexpected,$report);
+    }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testUnknownExtension()
+    {
+        $finder = new Finder();
+        $files  = $finder->files()->in( __DIR__. '/../')->name("*.yml");
+        $linkChecker = new GlLinkChecker('http://' . WEB_SERVER_HOST . ':' . WEB_SERVER_PORT);
+        $linkChecker->checkFiles(
+            $files,
+            function () {
+            },
+            function () {
+            },
+            function () {
+            }
+        );
+    }
+
+    public function getLinksFromMarkdownProvider()
+    {
+        return [
+            ['', []],
+            ['[a link](http://link.com)', ['http://link.com']],
+        ];
+    }
+
+    /**
+     * @dataProvider getLinksFromMarkdownProvider
+     */
+    public function testGetLinksFromMarkdown($linkString, $expected)
+    {
+        $linkChecker = new GlLinkChecker('http://' . WEB_SERVER_HOST . ':' . WEB_SERVER_PORT);
+        $result = $linkChecker->getLinksFromMarkdown($linkString);
+
+        $this->assertSame($expected, $result);
     }
 }

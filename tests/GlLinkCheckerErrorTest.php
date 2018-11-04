@@ -20,28 +20,28 @@ namespace GlLinkChecker\Tests;
 
 use GlLinkChecker\GlLinkCheckerError;
 use GuzzleHttp\Client;
-
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers        \GlLinkChecker\GlLinkCheckerError
  * @backupGlobals disabled
  */
-class GlLinkCheckerErrorTest extends \PHPUnit_Framework_TestCase
+class GlLinkCheckerErrorTest extends TestCase
 {
     public function testConstruct()
     {
         $client = new Client();
         $linkerror = new GlLinkCheckerError($client,'http://dev.glicer.com',['file1','file2']);
-        
+
         $this->assertEquals('http://dev.glicer.com', $linkerror->getLink());
         $this->assertEquals(['file1','file2'], $linkerror->getFiles());
     }
 
-    public function testCheck() 
+    public function testCheck()
     {
         $client = new Client();
         $linkerror = new GlLinkCheckerError($client, 'http://dev.glicer.com',['index.html']);
-        
+
         $linkerror->check(['exist','endslash','absolute','lowercase']);
     }
 }
