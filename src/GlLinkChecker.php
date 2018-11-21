@@ -227,7 +227,7 @@ class GlLinkChecker
      * @throws \Exception
      * @return GlLinkCheckerError[]
      */
-    public function checkFiles(Finder $files, callable $checkstart, callable $checking, callable $checkend)
+    public function checkFiles(Finder $files, callable $checkstart, callable $checking, callable $checkend, Array $criterias = ['lowercase', 'endslash', 'absolute'])
     {
         $linksByFile = [];
         /**
@@ -270,7 +270,7 @@ class GlLinkChecker
             $gllink = new GlLinkCheckerError($this->client, $link, $files);
 
             if ($gllink->isInternal($this->internalurls)) {
-                $gllink->check(['lowercase', 'endslash', 'absolute']);
+                $gllink->check($criterias);
             }
 
             $gllink->check(['exist']);
