@@ -130,9 +130,9 @@ class GlLinkCheckerTest extends \PHPUnit_Framework_TestCase
             $links[] = $link->getLink();
         }
 
-        $this->validatelink("https://ucarecdn.com/b7b8d79f-537b-4c9b-b4c3-e055556c2676/", $links,$result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
-        $this->validatelink("https://breatheco.de/en/lesson-asset/html5-cheat-shet/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => false, 'notendslash' => true]);
-        $this->validatelink("https://ucarecdn.com/8729c2f0-e4a6-4721-9ee9-3f29e6e852b5/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
+        $this->validatelink("https://ucarecdn.com/aa1a5994-8de9-4d24-99ce-3a0d686c30bd/-/resize/700x/", $links,$result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => true]);
+        $this->validatelink("https://projects.breatheco.de/d/landing-page-with-react#readme", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => true, 'notendslash' => false]);
+        $this->validatelink("https://ucarecdn.com/8729c2f0-e4a6-4721-9ee9-3f29e6e852b5/", $links, $result, ['absolute' => true, 'lowercase' => true, 'exist' => false, 'notendslash' => true]);
     }
     
     public function testLinks()
