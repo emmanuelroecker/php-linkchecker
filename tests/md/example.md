@@ -21,7 +21,7 @@ HTML makes you divide the website information into parts – similar to the basi
 
 Originally browsers only knew how to interpret HTML.  Websites were simple and neither CSS or JavaScript was used.  A website was a simple plain text document with the typical elements any Word Document has: Headings, Bullet lists, Paragraphs, etc.
 
-![buildinghtml](https://ucarecdn.com/b7b8d79f-537b-4c9b-b4c3-e055556c2676/)
+![buildinghtml](https://ucarecdn.com/aa1a5994-8de9-4d24-99ce-3a0d686c30bd/-/resize/700x/)
 
 
 All tags must open and close.  To close a tag you must place the same word but using the `/` symbol.
@@ -35,7 +35,7 @@ Once the `<tag>` is defined, we can describe in detail its behavior by assigning
 ```
 
 
-In theory, you have to use [one of these tags](https://breatheco.de/en/lesson-asset/html5-cheat-shet/) and don’t invent your own because the browser won’t know how to interpret them.  You must learn what each tag means and does in order to put them to good use…but, please, don’t worry!   There aren’t that many! 🙂
+In theory, you have to use [one of these tags](https://projects.breatheco.de/d/landing-page-with-react#readme) and don’t invent your own because the browser won’t know how to interpret them.  You must learn what each tag means and does in order to put them to good use…but, please, don’t worry!   There aren’t that many! 🙂
 
 For the main heading of the document, the tag that we use is `<h1>`.  For example: An online store has an "electronics" category, the title that applies would be "Electronics" and the `<h1>` tag would be written as follows:
 
