@@ -41,6 +41,7 @@ php composer.phar install
 require 'vendor/autoload.php';
 
 use GlLinkChecker\GlLinkChecker;
+use GlLinkChecker\GlLinkCheckerReport;
 use Symfony\Component\Finder\Finder;
 
 //relative url use host http://lyon.glicer.com to check link
@@ -77,6 +78,8 @@ you can view $filereport with your browser
 
 ```php
 require 'vendor/autoload.php';
+
+use GlLinkChecker\GlLinkChecker;
 
 $linkChecker = new GlLinkChecker('http://lyon.glicer.com');
 $result      = $linkChecker->checkRobotsSitemap();
